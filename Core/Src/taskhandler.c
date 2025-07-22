@@ -5,6 +5,7 @@
 #include "FreeRTOSConfig.h"
 #include "task.h"
 #include "queue.h"
+#include "LEDeffect.h"
 
 state_t current_state=smainmenu;
 BaseType_t ret;

@@ -74,6 +74,8 @@ typedef enum {
 	RTCReport
 } state_t;
 
+
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

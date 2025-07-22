@@ -12,6 +12,6 @@
 
 
 
-void ledeffects(int effectnum);
+void ledeffect(int effectnum);
 
 #endif /* INC_LEDEFFECT_H_ */

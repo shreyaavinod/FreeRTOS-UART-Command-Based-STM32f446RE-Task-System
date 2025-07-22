@@ -26,6 +26,7 @@
 #include "task.h"
 #include "queue.h"
 #include "taskhandler.h"
+#include "timers.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -59,7 +60,7 @@ QueueHandle_t inputqueue;
 QueueHandle_t printqueue;
 
 BaseType_t status;
-
+TimerHandle_t timerhandle[4];
 volatile uint8_t userdata;
 
 /* USER CODE END PV */
@@ -70,7 +71,7 @@ static void MX_GPIO_Init(void);
 static void MX_RTC_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-
+void timer_callback(TimerHandle_t timerhandle);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -129,6 +130,11 @@ int main(void)
   inputqueue=xQueueCreate(10,sizeof(char));
   configASSERT(inputqueue!=NULL);
 
+  //create software timers:
+  for (int i=0;i<4;i++)
+  {
+	 timerhandle[i]=xTimerCreate("Timer", pdMS_TO_TICKS(500), pdTRUE, (void *)(i+1), timer_callback );
+  }
   HAL_UART_Receive_IT(&huart2,&userdata,1);
   vTaskStartScheduler();
 
@@ -321,6 +327,14 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   // AGAIN ENABLE THE HAL UART RECEIVE
 
   HAL_UART_Receive_IT(&huart2,&userdata,1);
+}
+
+
+
+//timer callback function
+void timer_callback(TimerHandle_t timerhandle)
+{
+
 }
 /* USER CODE END 4 */
 
