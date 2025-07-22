@@ -13,5 +13,11 @@
 
 
 void ledeffect(int effectnum);
+void ledeffect1(void );
+void ledeffect2(void );
+void ledeffect3(void );
+void ledeffect4(void );
+
+
 
 #endif /* INC_LEDEFFECT_H_ */

@@ -71,7 +71,8 @@ static void MX_GPIO_Init(void);
 static void MX_RTC_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-void timer_callback(TimerHandle_t timerhandle);
+TimerCallbackFunction_t timer_callback(TimerHandle_t timerhandle);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -332,8 +333,32 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 
 //timer callback function
-void timer_callback(TimerHandle_t timerhandle)
+TimerCallbackFunction_t timer_callback(TimerHandle_t timerhandle)
 {
+	int id= (uint32_t)pvTimerGetTimerID(timerhandle);
+
+	switch (id)
+	{
+	case 1:
+		ledeffect1();
+		break;
+
+	case 2:
+		ledeffect2();
+		break;
+
+
+	case 3:
+		ledeffect3();
+		break;
+
+	case 4:
+		ledeffect4();
+		break;
+
+
+	}
+
 
 }
 /* USER CODE END 4 */

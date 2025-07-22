@@ -130,7 +130,7 @@ void led_task(void * parameters)
 				ledeffect(3);
 			}else if (option==4)
 			{
-				ledeffect(4);
+				ledeffectnone();
 			}
 			else {
 				//invalid command
