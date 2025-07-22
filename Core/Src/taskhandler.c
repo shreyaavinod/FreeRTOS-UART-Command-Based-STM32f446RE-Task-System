@@ -13,6 +13,7 @@ BaseType_t ret;
 
 
 extern QueueHandle_t inputqueue;
+extern QueueHandle_t printqueue;
 extern TaskHandle_t menutask;
 extern TaskHandle_t rtctask;
 extern TaskHandle_t printtask;
@@ -57,9 +58,11 @@ void menu_task(void * parameters)
 		switch(option)
 		{
 		case 0:
+			current_state=sLEDMenu;
 			xTaskNotify(ledtask,0,eNoAction);
 			break;
 		case 1:
+			current_state=RTCMenu;
 			xTaskNotify(rtctask,0,eNoAction);
 			break;
 		case 2:
@@ -70,9 +73,9 @@ void menu_task(void * parameters)
 
 
 		}
-
+		xTaskNotifyWait(0,0,NULL,portMAX_DELAY);
 	}
-	xTaskNotifyWait(0,0,NULL,portMAX_DELAY);
+
 }
 
 void rtc_task(void * parameters)
@@ -112,31 +115,40 @@ void led_task(void * parameters)
 			if(cmd_ptr->len==1)
 			{
 			option=cmd_ptr->payload[0]-48;
+			if(option==0)
+			{
+				ledeffect(0);
+			}else if(option==1)
+			{
+				ledeffect(1);
+			}else if (option==2)
+			{
+				ledeffect(2);
+			}else if (option==3)
+			{
+				ledeffect(3);
+			}else if (option==4)
+			{
+				ledeffect(4);
+			}
+			else {
+				//invalid command
+				xQueueSend(printqueue,&invalidmessage,portMAX_DELAY);
+
+			}
 			}
 			else {
 				//invalid
 				xQueueSend(printqueue,&invalidmessage,portMAX_DELAY);
+				current_state=smainmenu;
 			}
 
-			switch(option)
-			{
-			case 0:
-				xTaskNotify(ledtask,0,eNoAction);
-				break;
-			case 1:
-				xTaskNotify(rtctask,0,eNoAction);
-				break;
-			case 2:
-				break;
-			default:
-				xQueueSend(printqueue,&invalidmessage,portMAX_DELAY);
-				continue;
-
+			xTaskNotifyWait(0,0,NULL,portMAX_DELAY);
 
 			}
 
-		}
-}
+	}
+
 
 void print_task(void * parameters)
 {
