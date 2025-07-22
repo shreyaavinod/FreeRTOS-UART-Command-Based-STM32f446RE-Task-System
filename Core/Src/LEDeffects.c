@@ -2,7 +2,7 @@
 #include "stdint.h"
 #include "LEDeffect.h"
 
-void ledeffect(int effectnum)
+void ledeffects(int effectnum)
 {
 //	switch (effectnum)
 //	{
